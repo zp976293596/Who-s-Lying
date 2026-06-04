@@ -170,11 +170,21 @@
 ```
 谁是人类/
 ├── miniprogram/                # 小程序前端
-│   ├── pages/                  # 首页、游戏、结算、个人中心
+│   ├── pages/
+│   │   ├── index/              # 首页/大厅
+│   │   ├── game/               # 游戏主页面
+│   │   ├── result/             # 结算页面
+│   │   └── profile/            # 个人中心
 │   ├── components/             # 公共组件
 │   ├── utils/                  # 工具函数
-│   └── styles/                 # 全局样式
+│   ├── styles/                 # 全局样式
+│   ├── app.js                  # 云开发初始化
+│   ├── app.json                # 页面路由配置
+│   └── app.wxss                # 赛博暗黑全局样式
 ├── cloudfunctions/             # 云函数
+│   ├── login/                  # 用户登录（自动建档）
+│   └── hello/                  # 测试函数
+├── project.config.json         # 小程序项目配置
 ├── docs/                       # 设计文档（9份）
 ├── devlog/                     # 开发日志
 └── README.md
@@ -184,7 +194,7 @@
 
 | 阶段 | 内容 | 状态 |
 |------|------|------|
-| Phase 1 | 项目脚手架 | ⬜ 待开始 |
+| Phase 1 | 项目脚手架 | ✅ 已完成 |
 | Phase 2 | 首页与登录 | ⬜ 待开始 |
 | Phase 3 | 题库与游戏创建 | ⬜ 待开始 |
 | Phase 4 | 答题与揭示 | ⬜ 待开始 |
