@@ -1,0 +1,18 @@
+<view class="container index-page">
+  <!-- 标题区 -->
+  <view class="title-area">
+    <text class="title">谁是人类</text>
+    <text class="subtitle">WHO IS HUMAN</text>
+  </view>
+
+  <!-- 主按钮区 -->
+  <view class="action-area">
+    <button class="btn-primary" bindtap="onStartGame">开始审查</button>
+    <button class="btn-secondary" bindtap="onGoProfile">个人档案</button>
+  </view>
+
+  <!-- 底部装饰 -->
+  <view class="footer">
+    <text class="footer-text">MATRIX PROTOCOL v1.0</text>
+  </view>
+</view>

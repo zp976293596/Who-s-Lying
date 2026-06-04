@@ -1,0 +1,16 @@
+const cloud = require('wx-server-sdk')
+
+cloud.init({
+  env: cloud.DYNAMIC_CURRENT_ENV
+})
+
+exports.main = async (event, context) => {
+  const wxContext = cloud.getWXContext()
+
+  return {
+    code: 0,
+    message: 'Hello from Matrix!',
+    openid: wxContext.OPENID,
+    timestamp: Date.now()
+  }
+}

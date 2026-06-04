@@ -1,0 +1,26 @@
+.game-page {
+  min-height: 100vh;
+}
+
+.page-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: var(--accent-green);
+  margin-bottom: 16rpx;
+}
+
+.phase-label {
+  display: block;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  margin-bottom: 32rpx;
+  font-family: monospace;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400rpx;
+}

@@ -1,0 +1,9 @@
+<view class="container game-page">
+  <text class="page-title">第 {{round}} 轮审查</text>
+  <text class="phase-label">当前阶段：{{phase}}</text>
+
+  <!-- 游戏内容区域（后续Phase填充） -->
+  <view class="placeholder card">
+    <text class="text-secondary">等待实现...</text>
+  </view>
+</view>

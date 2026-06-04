@@ -1,0 +1,30 @@
+<view class="container profile-page">
+  <!-- 用户头像区 -->
+  <view class="avatar-area">
+    <view class="avatar-placeholder">
+      <text class="avatar-text">?</text>
+    </view>
+    <text class="username">待登录</text>
+  </view>
+
+  <!-- 战绩统计 -->
+  <view class="stats-area card">
+    <text class="stats-title">审查记录</text>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-value">{{stats.totalGames}}</text>
+        <text class="stat-label">总场次</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value text-green">{{stats.wins}}</text>
+        <text class="stat-label">胜利</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value text-blue">{{stats.winRate}}</text>
+        <text class="stat-label">胜率</text>
+      </view>
+    </view>
+  </view>
+
+  <button class="btn-secondary" bindtap="onBackHome">返回大厅</button>
+</view>

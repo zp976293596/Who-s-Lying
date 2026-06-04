@@ -1,0 +1,17 @@
+<view class="container result-page">
+  <view class="result-area">
+    <text class="result-title" wx:if="{{result === 'win'}}">伪装成功</text>
+    <text class="result-title result-lose" wx:else>身份暴露</text>
+    <text class="result-subtitle">审判结束</text>
+  </view>
+
+  <!-- 结算详情区域（后续Phase填充） -->
+  <view class="detail-area card">
+    <text class="text-secondary">结算数据待实现...</text>
+  </view>
+
+  <view class="action-area">
+    <button class="btn-primary" bindtap="onPlayAgain">再来一局</button>
+    <button class="btn-secondary" bindtap="onBackHome">返回大厅</button>
+  </view>
+</view>

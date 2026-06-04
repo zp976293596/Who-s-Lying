@@ -1,0 +1,55 @@
+.index-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32rpx;
+  box-sizing: border-box;
+}
+
+.title-area {
+  text-align: center;
+  margin-bottom: 120rpx;
+}
+
+.title {
+  display: block;
+  font-size: 72rpx;
+  font-weight: bold;
+  color: var(--accent-green);
+  letter-spacing: 8rpx;
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+.subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  letter-spacing: 12rpx;
+  margin-top: 16rpx;
+  font-family: monospace;
+}
+
+.action-area {
+  width: 100%;
+  max-width: 560rpx;
+}
+
+.action-area button {
+  margin-bottom: 32rpx;
+  width: 100%;
+}
+
+.footer {
+  position: fixed;
+  bottom: 64rpx;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 22rpx;
+  color: var(--border-color);
+  font-family: monospace;
+  letter-spacing: 4rpx;
+}

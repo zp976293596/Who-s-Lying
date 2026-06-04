@@ -1,0 +1,51 @@
+.result-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 120rpx;
+}
+
+.result-area {
+  text-align: center;
+  margin-bottom: 80rpx;
+}
+
+.result-title {
+  display: block;
+  font-size: 64rpx;
+  font-weight: bold;
+  color: var(--accent-green);
+  text-shadow: 0 0 24px rgba(0, 255, 136, 0.5);
+}
+
+.result-lose {
+  color: var(--accent-red);
+  text-shadow: 0 0 24px rgba(255, 51, 102, 0.5);
+}
+
+.result-subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  margin-top: 16rpx;
+}
+
+.detail-area {
+  width: 100%;
+  margin-bottom: 80rpx;
+  min-height: 300rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-area {
+  width: 100%;
+  max-width: 560rpx;
+}
+
+.action-area button {
+  margin-bottom: 32rpx;
+  width: 100%;
+}

@@ -1,0 +1,65 @@
+/* 全局样式变量 */
+page {
+  --bg-primary: #0a0e17;
+  --bg-secondary: #111827;
+  --accent-green: #00ff88;
+  --accent-blue: #00b4d8;
+  --accent-red: #ff3366;
+  --text-primary: #e0e0e0;
+  --text-secondary: #6b7280;
+  --border-color: #1e293b;
+  --radius: 12rpx;
+
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* 通用工具类 */
+.container {
+  padding: 32rpx;
+}
+
+.card {
+  background: var(--bg-secondary);
+  border: 1rpx solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+  background: var(--accent-green);
+  color: var(--bg-primary);
+  border-radius: 8rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  border: none;
+}
+
+.btn-primary:active {
+  opacity: 0.85;
+  transform: scale(0.97);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent-green);
+  border: 1rpx solid var(--accent-green);
+  border-radius: 8rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  font-size: 32rpx;
+}
+
+.text-green { color: var(--accent-green); }
+.text-blue { color: var(--accent-blue); }
+.text-red { color: var(--accent-red); }
+.text-secondary { color: var(--text-secondary); }
+.text-center { text-align: center; }
