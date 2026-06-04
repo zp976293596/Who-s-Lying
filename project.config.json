@@ -32,14 +32,31 @@
     "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
-    "userConfirmedUseCompilerModule": true
+    "userConfirmedUseCompilerModule": true,
+    "compileWorklet": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
-  "appid": "your-appid",
+  "appid": "wxcdc7c583a281f8e5",
   "projectname": "who-is-human",
   "libVersion": "3.3.4",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {},
   "srcMiniprogramRoot": "miniprogram/",
   "compileType": "miniprogram",
-  "description": "谁是人类 - 赛博暗黑风格推理对战小游戏"
+  "description": "谁是人类 - 赛博暗黑风格推理对战小游戏",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
 }

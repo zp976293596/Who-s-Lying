@@ -40,6 +40,8 @@ page {
   font-size: 32rpx;
   font-weight: bold;
   border: none;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .btn-primary:active {
@@ -56,6 +58,8 @@ page {
   line-height: 88rpx;
   text-align: center;
   font-size: 32rpx;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .text-green { color: var(--accent-green); }

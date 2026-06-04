@@ -34,6 +34,7 @@
 .action-area {
   width: 100%;
   max-width: 560rpx;
+  text-align: center;
 }
 
 .action-area button {
@@ -44,6 +45,8 @@
 .footer {
   position: fixed;
   bottom: 64rpx;
+  left: 0;
+  width: 100%;
   text-align: center;
 }
 

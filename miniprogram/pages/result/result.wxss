@@ -43,6 +43,7 @@
 .action-area {
   width: 100%;
   max-width: 560rpx;
+  text-align: center;
 }
 
 .action-area button {
