@@ -151,8 +151,18 @@
 3. 开通云开发环境
 4. 在 `app.js` 中填入云开发环境ID
 5. 创建云数据库集合（见 `docs/03-数据模型.md`）
-6. 部署云函数
-7. 编译运行
+6. 右键每个云函数文件夹 → 「上传并部署：云端安装依赖」
+7. 调用 `initQuestions` 云函数初始化题库
+8. 编译运行
+
+### 云函数部署顺序
+1. `login` - 登录
+2. `hello` - 测试
+3. `initQuestions` - 初始化题库（首次部署时调用）
+4. `createGame` - 创建游戏
+5. `submitAnswer` - 提交答案
+6. `getAnswers` - 获取答案
+7. `nextRound` - 下一轮
 
 ## 设计风格
 
@@ -175,15 +185,19 @@
 │   │   ├── game/               # 游戏主页面
 │   │   ├── result/             # 结算页面
 │   │   └── profile/            # 个人中心
-│   ├── components/             # 公共组件
-│   ├── utils/                  # 工具函数
 │   ├── styles/                 # 全局样式
+│   │   └── theme.wxss          # 赛博暗黑主题
 │   ├── app.js                  # 云开发初始化
 │   ├── app.json                # 页面路由配置
 │   └── app.wxss                # 赛博暗黑全局样式
 ├── cloudfunctions/             # 云函数
-│   ├── login/                  # 用户登录（自动建档）
-│   └── hello/                  # 测试函数
+│   ├── login/                  # 用户登录 + 更新资料
+│   ├── hello/                  # 测试函数
+│   ├── createGame/             # 创建游戏
+│   ├── initQuestions/          # 初始化题库（16道）
+│   ├── submitAnswer/           # 提交答案 + AI作答
+│   ├── getAnswers/             # 获取所有答案
+│   └── nextRound/              # 计算分数 + 进入下一轮
 ├── project.config.json         # 小程序项目配置
 ├── docs/                       # 设计文档（9份）
 ├── devlog/                     # 开发日志
@@ -195,9 +209,9 @@
 | 阶段 | 内容 | 状态 |
 |------|------|------|
 | Phase 1 | 项目脚手架 | ✅ 已完成 |
-| Phase 2 | 首页与登录 | ⬜ 待开始 |
-| Phase 3 | 题库与游戏创建 | ⬜ 待开始 |
-| Phase 4 | 答题与揭示 | ⬜ 待开始 |
+| Phase 2 | 首页与登录 | ✅ 已完成 |
+| Phase 3 | 题库与游戏创建 | ✅ 已完成 |
+| Phase 4 | 答题与揭示 | ✅ 已完成 |
 | Phase 5 | 讨论与AI发言 | ⬜ 待开始 |
 | Phase 6 | 投票与淘汰 | ⬜ 待开始 |
 | Phase 7 | 循环+审判+结算 | ⬜ 待开始 |
