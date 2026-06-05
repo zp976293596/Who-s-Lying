@@ -87,10 +87,66 @@
       </view>
     </view>
 
-    <!-- 下一轮按钮 -->
-    <button class="btn-primary next-btn" bindtap="onNextRound">
-      {{round < maxRounds ? '进入第 ' + (round + 1) + ' 轮' : '查看结算'}}
+    <!-- 进入讨论按钮 -->
+    <button class="btn-primary next-btn" bindtap="onEnterDiscussion">
+      进入讨论分析
     </button>
+  </view>
+
+  <!-- 讨论阶段 -->
+  <view class="discussion-area" wx:if="{{phase === 'discussing'}}">
+    <!-- 讨论倒计时 -->
+    <view class="discussion-header">
+      <text class="discussion-title">讨论分析</text>
+      <view class="discussion-timer {{discussionTimeLeft <= 15 ? 'timer-warning' : ''}}">
+        <text>{{discussionTimeLeft}}秒</text>
+      </view>
+    </view>
+
+    <!-- 本轮作答数据汇总 -->
+    <view class="answer-summary card">
+      <text class="summary-title">本轮作答汇总</text>
+      <view class="summary-stats">
+        <view class="stat-item">
+          <text class="stat-value text-green">{{correctCount}}</text>
+          <text class="stat-label">答对</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value text-red">{{wrongCount}}</text>
+          <text class="stat-label">答错</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 讨论消息列表 -->
+    <scroll-view class="discussions-list" scroll-y scroll-into-view="{{'msg-' + discussions.length}}">
+      <view class="discussion-item" wx:for="{{discussions}}" wx:key="_id" id="msg-{{index}}">
+        <view class="msg-header">
+          <text class="msg-sender {{item.isHuman ? 'text-green' : 'text-blue'}}">{{item.playerName}}</text>
+          <text class="msg-time">{{item.timestampStr}}</text>
+        </view>
+        <view class="msg-content">
+          <text>{{item.content}}</text>
+        </view>
+      </view>
+      <!-- 空状态 -->
+      <view class="empty-discussion" wx:if="{{discussions.length === 0}}">
+        <text class="text-gray">暂无讨论发言...</text>
+      </view>
+    </scroll-view>
+
+    <!-- 输入区域 -->
+    <view class="discussion-input-area">
+      <input
+        class="discussion-input"
+        placeholder="发表你的分析..."
+        value="{{discussionInput}}"
+        bindinput="onDiscussionInput"
+        bindconfirm="onSendDiscussion"
+        confirm-type="send"
+      />
+      <button class="btn-send" bindtap="onSendDiscussion">发送</button>
+    </view>
   </view>
 
   <!-- 结束 -->

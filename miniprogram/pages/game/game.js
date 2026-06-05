@@ -17,7 +17,14 @@ Page({
     correctAnswer: '',
     answerResults: [],
     humanAnswer: null,
-    myResult: null
+    myResult: null,
+    // 讨论阶段数据
+    discussions: [],
+    discussionInput: '',
+    discussionTimeLeft: 60,
+    discussionTimer: null,
+    correctCount: 0,
+    wrongCount: 0
   },
 
   onLoad(options) {
@@ -55,6 +62,9 @@ Page({
   onUnload() {
     if (this.data.timer) {
       clearInterval(this.data.timer)
+    }
+    if (this.data.discussionTimer) {
+      clearInterval(this.data.discussionTimer)
     }
   },
 
@@ -169,6 +179,9 @@ Page({
             myResult,
             players: sortedPlayers
           })
+
+          // 自动生成AI初始讨论发言
+          this.generateInitialDiscussions()
         }
       },
       fail: err => {
@@ -266,5 +279,225 @@ Page({
   onFinishGame() {
     wx.removeStorageSync('currentGame')
     wx.navigateBack()
+  },
+
+  // 进入讨论阶段
+  onEnterDiscussion() {
+    // 预处理统计数据
+    const correctCount = this.data.answerResults.filter(r => r.isCorrect).length
+    const wrongCount = this.data.answerResults.filter(r => !r.isCorrect).length
+
+    this.setData({
+      phase: 'discussing',
+      discussions: [],
+      discussionTimeLeft: 60,
+      correctCount,
+      wrongCount
+    })
+    this.startDiscussionTimer()
+    this.loadDiscussions()
+  },
+
+  // 开始讨论倒计时
+  startDiscussionTimer() {
+    const discussionTimer = setInterval(() => {
+      if (this.data.discussionTimeLeft <= 0) {
+        clearInterval(discussionTimer)
+        this.onDiscussionEnd()
+        return
+      }
+
+      const timeLeft = this.data.discussionTimeLeft - 1
+      this.setData({ discussionTimeLeft: timeLeft })
+
+      // 在特定时间点触发AI发言
+      if (timeLeft === 40 || timeLeft === 20 || timeLeft === 10) {
+        this.triggerAIDiscussion()
+      }
+    }, 1000)
+    this.setData({ discussionTimer })
+  },
+
+  // 讨论输入变化
+  onDiscussionInput(e) {
+    this.setData({ discussionInput: e.detail.value })
+  },
+
+  // 发送讨论消息
+  onSendDiscussion() {
+    const content = this.data.discussionInput.trim()
+    if (!content) {
+      wx.showToast({ title: '请输入内容', icon: 'none' })
+      return
+    }
+
+    wx.showLoading({ title: '发送中...' })
+
+    wx.cloud.callFunction({
+      name: 'sendDiscussion',
+      data: {
+        gameId: this.data.gameId,
+        roundId: app.globalData.currentGame.roundId,
+        content
+      },
+      timeout: 30000,
+      success: res => {
+        wx.hideLoading()
+        if (res.result && res.result.code === 0) {
+          this.setData({ discussionInput: '' })
+          // 重新加载讨论消息
+          this.loadDiscussions()
+        } else {
+          wx.showToast({ title: res.result?.message || '发送失败', icon: 'none' })
+        }
+      },
+      fail: err => {
+        wx.hideLoading()
+        console.error('发送讨论失败', err)
+        wx.showToast({ title: '发送失败', icon: 'none' })
+      }
+    })
+  },
+
+  // 加载讨论消息
+  loadDiscussions() {
+    wx.cloud.callFunction({
+      name: 'getDiscussions',
+      data: {
+        gameId: this.data.gameId,
+        roundId: app.globalData.currentGame.roundId
+      },
+      timeout: 30000,
+      success: res => {
+        if (res.result && res.result.code === 0) {
+          this.setData({ discussions: res.result.data })
+          // 滚动到底部
+          this.scrollToBottom()
+        }
+      },
+      fail: err => {
+        console.error('加载讨论失败', err)
+      }
+    })
+  },
+
+  // 滚动到讨论底部
+  scrollToBottom() {
+    setTimeout(() => {
+      const query = wx.createSelectorQuery()
+      query.select('.discussions-list').boundingClientRect()
+      query.selectViewport().scrollOffset()
+      query.exec(res => {
+        if (res[0]) {
+          wx.pageScrollTo({
+            scrollTop: res[0].bottom,
+            duration: 300
+          })
+        }
+      })
+    }, 100)
+  },
+
+  // 生成初始AI讨论发言
+  generateInitialDiscussions() {
+    const { gameId, answerResults, players, round } = this.data
+    const roundId = app.globalData.currentGame.roundId
+
+    // 随机选择1-2个AI进行初始发言
+    const aiPlayers = players.filter(p => !p.isHuman && p.alive)
+    const speakingCount = Math.min(Math.floor(Math.random() * 2) + 1, aiPlayers.length)
+    const shuffled = [...aiPlayers].sort(() => Math.random() - 0.5)
+    const speakingAI = shuffled.slice(0, speakingCount)
+
+    // AI发言模板
+    const initTemplates = [
+      '第{round}题的作答情况已经出来了，让我们分析一下。',
+      '我注意到有人的作答时间异常，值得关注。',
+      '这次的正确率整体{status}，但有些细节需要讨论。',
+      '开始分析本轮作答数据，大家有什么发现？'
+    ]
+
+    speakingAI.forEach((ai, index) => {
+      setTimeout(() => {
+        const template = initTemplates[Math.floor(Math.random() * initTemplates.length)]
+        const correctRate = answerResults.filter(r => r.isCorrect).length / answerResults.length
+        const content = template
+          .replace('{round}', round)
+          .replace('{status}', correctRate > 0.7 ? '不错' : '偏低')
+
+        wx.cloud.callFunction({
+          name: 'sendDiscussion',
+          data: {
+            gameId,
+            roundId,
+            content,
+            isSystem: true // 标记为系统生成，不触发额外AI回复
+          }
+        })
+
+        this.loadDiscussions()
+      }, index * 1500)
+    })
+  },
+
+  // 讨论结束
+  onDiscussionEnd() {
+    if (this.data.discussionTimer) {
+      clearInterval(this.data.discussionTimer)
+    }
+    // 进入下一轮
+    this.onNextRound()
+  },
+
+  // 触发AI讨论发言
+  triggerAIDiscussion() {
+    const { gameId, players, answerResults, round } = this.data
+    const roundId = app.globalData.currentGame.roundId
+
+    // 随机选择1-2个AI发言
+    const aiPlayers = players.filter(p => !p.isHuman && p.alive)
+    const replyCount = Math.min(Math.floor(Math.random() * 2) + 1, aiPlayers.length)
+    const shuffled = [...aiPlayers].sort(() => Math.random() - 0.5)
+    const speakingAI = shuffled.slice(0, replyCount)
+
+    // 根据时间点选择发言模板
+    const timeTemplates = {
+      40: [
+        '大家讨论得怎么样了？我来分析一下数据。',
+        '我注意到一些有趣的模式，让我分享一下。',
+        '从作答数据来看，有几个值得关注的点。'
+      ],
+      20: [
+        '时间不多了，我来总结一下目前的发现。',
+        '距离讨论结束还有20秒，大家有什么结论？',
+        '让我快速分析一下关键疑点。'
+      ],
+      10: [
+        '最后10秒，我的结论是...',
+        '时间紧迫，我必须说出我的判断。',
+        '最终分析：有人在伪装，我有线索。'
+      ]
+    }
+
+    const templates = timeTemplates[this.data.discussionTimeLeft] || timeTemplates[40]
+
+    speakingAI.forEach((ai, index) => {
+      setTimeout(() => {
+        const template = templates[Math.floor(Math.random() * templates.length)]
+
+        wx.cloud.callFunction({
+          name: 'sendDiscussion',
+          data: {
+            gameId,
+            roundId,
+            content: template,
+            isSystem: true
+          },
+          success: () => {
+            this.loadDiscussions()
+          }
+        })
+      }, index * 800)
+    })
   }
 })

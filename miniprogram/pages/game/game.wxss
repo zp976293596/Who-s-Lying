@@ -331,3 +331,166 @@
 .finish-area {
   margin-top: 60rpx;
 }
+
+/* 讨论阶段 */
+.discussion-area {
+  margin-top: 24rpx;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 300rpx);
+}
+
+.discussion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.discussion-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: var(--accent-green);
+}
+
+.discussion-timer {
+  padding: 8rpx 20rpx;
+  background: var(--bg-secondary);
+  border: 1rpx solid var(--border-color);
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: var(--accent-green);
+  font-family: monospace;
+}
+
+.discussion-timer.timer-warning {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  animation: pulse 1s infinite;
+}
+
+/* 作答汇总 */
+.answer-summary {
+  margin-bottom: 16rpx;
+}
+
+.summary-title {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 12rpx;
+  font-family: monospace;
+}
+
+.summary-stats {
+  display: flex;
+  justify-content: space-around;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}
+
+/* 讨论消息列表 */
+.discussions-list {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 1rpx solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 16rpx;
+  margin-bottom: 16rpx;
+  overflow-y: auto;
+  max-height: 500rpx;
+}
+
+.discussion-item {
+  margin-bottom: 16rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.discussion-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.msg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.msg-sender {
+  font-size: 26rpx;
+  font-weight: bold;
+}
+
+.msg-time {
+  font-size: 20rpx;
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+.msg-content {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.empty-discussion {
+  text-align: center;
+  padding: 40rpx 0;
+}
+
+/* 讨论输入区域 */
+.discussion-input-area {
+  display: flex;
+  gap: 12rpx;
+  padding: 16rpx 0;
+}
+
+.discussion-input {
+  flex: 1;
+  height: 72rpx;
+  background: var(--bg-secondary);
+  border: 2rpx solid var(--border-color);
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+}
+
+.discussion-input:focus {
+  border-color: var(--accent-green);
+}
+
+.btn-send {
+  width: 120rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
+  background: var(--accent-green);
+  color: var(--bg-primary);
+  font-size: 28rpx;
+  font-weight: bold;
+  border-radius: 8rpx;
+}
+
+.btn-send:active {
+  opacity: 0.8;
+}
