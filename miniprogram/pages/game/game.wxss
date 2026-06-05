@@ -1,26 +1,333 @@
+@import '../../styles/theme.wxss';
+
 .game-page {
   min-height: 100vh;
+  padding-bottom: 40rpx;
 }
 
-.page-title {
-  display: block;
+/* 顶部信息栏 */
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.round-info {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.round-label {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: var(--accent-green);
+}
+
+.phase-badge {
+  font-size: 22rpx;
+}
+
+.timer {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+  padding: 12rpx 24rpx;
+  background: var(--bg-secondary);
+  border: 1rpx solid var(--border-color);
+  border-radius: 8rpx;
+}
+
+.timer-warning {
+  border-color: var(--accent-red);
+  animation: pulse 1s infinite;
+}
+
+.timer-value {
   font-size: 40rpx;
   font-weight: bold;
   color: var(--accent-green);
-  margin-bottom: 16rpx;
-}
-
-.phase-label {
-  display: block;
-  font-size: 26rpx;
-  color: var(--text-secondary);
-  margin-bottom: 32rpx;
   font-family: monospace;
 }
 
-.placeholder {
+.timer-warning .timer-value {
+  color: var(--accent-red);
+}
+
+.timer-unit {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}
+
+/* 嫌疑公示栏 */
+.suspect-board {
+  margin-bottom: 24rpx;
+}
+
+.board-title {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 16rpx;
+  font-family: monospace;
+}
+
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.player-name {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  width: 120rpx;
+}
+
+.possibility-bar {
+  flex: 1;
+  height: 12rpx;
+  background: var(--bg-primary);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.possibility-fill {
+  height: 100%;
+  background: var(--accent-green);
+  border-radius: 6rpx;
+  transition: width 0.3s ease;
+}
+
+.possibility-value {
+  font-size: 24rpx;
+  font-weight: bold;
+  color: var(--accent-green);
+  width: 60rpx;
+  text-align: right;
+  font-family: monospace;
+}
+
+/* 题目区域 */
+.question-area {
+  margin-top: 24rpx;
+}
+
+.question-type {
+  margin-bottom: 16rpx;
+}
+
+.question-content {
+  display: block;
+  font-size: 32rpx;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: 32rpx;
+  padding: 24rpx;
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border-left: 4rpx solid var(--accent-green);
+}
+
+/* 选项列表 */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-bottom: 32rpx;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 24rpx;
+  background: var(--bg-secondary);
+  border: 2rpx solid var(--border-color);
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+}
+
+.option-item:active {
+  transform: scale(0.98);
+}
+
+.option-selected {
+  border-color: var(--accent-green);
+  background: rgba(0, 255, 136, 0.1);
+  box-shadow: 0 0 15rpx rgba(0, 255, 136, 0.2);
+}
+
+.option-label {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 400rpx;
+  width: 48rpx;
+  height: 48rpx;
+  background: var(--bg-primary);
+  border-radius: 50%;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: var(--text-secondary);
+}
+
+.option-selected .option-label {
+  background: var(--accent-green);
+  color: var(--bg-primary);
+}
+
+.option-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: var(--text-primary);
+}
+
+.option-selected .option-text {
+  color: var(--accent-green);
+}
+
+/* 提交按钮 */
+.submit-btn {
+  margin-top: 20rpx;
+}
+
+/* 揭示阶段 */
+.reveal-area {
+  margin-top: 24rpx;
+}
+
+.correct-answer {
+  text-align: center;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.reveal-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 12rpx;
+  font-family: monospace;
+}
+
+.answer-value {
+  display: block;
+  font-size: 64rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+}
+
+.my-answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 16rpx;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+}
+
+.answer-correct {
+  background: rgba(0, 255, 136, 0.1);
+  border: 1rpx solid rgba(0, 255, 136, 0.3);
+  color: var(--accent-green);
+}
+
+.answer-wrong {
+  background: rgba(255, 51, 102, 0.1);
+  border: 1rpx solid rgba(255, 51, 102, 0.3);
+  color: var(--accent-red);
+}
+
+.result-icon {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+/* 作答列表 */
+.answers-list {
+  margin-top: 24rpx;
+}
+
+.list-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 16rpx;
+}
+
+.answer-item {
+  background: var(--bg-secondary);
+  border: 1rpx solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 20rpx;
+  margin-bottom: 12rpx;
+}
+
+.answer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.answer-header .player-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.response-time {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+.answer-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.answer-choice {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.answer-result {
+  font-size: 26rpx;
+  font-weight: bold;
+}
+
+.anomaly-tags {
+  display: flex;
+  gap: 8rpx;
+  margin-top: 12rpx;
+}
+
+.anomaly-tag {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  font-size: 20rpx;
+  background: rgba(255, 215, 0, 0.15);
+  color: var(--accent-yellow);
+  border: 1rpx solid rgba(255, 215, 0, 0.3);
+  border-radius: 4rpx;
+}
+
+.next-btn {
+  margin-top: 32rpx;
+}
+
+/* 结束 */
+.finish-area {
+  margin-top: 60rpx;
 }

@@ -5,14 +5,20 @@ App({
       return
     }
     wx.cloud.init({
-      env: 'your-env-id', // TODO: 替换为实际云开发环境ID
+      env: 'cloud1-d6giiwe1w211221f4',
       traceUser: true
     })
-    this.globalData = {}
+    this.globalData = {
+      userInfo: null,
+      openid: null,
+      cloudReady: true
+    }
+    console.log('云开发初始化完成')
   },
 
   globalData: {
     userInfo: null,
-    openid: null
+    openid: null,
+    cloudReady: false
   }
 })

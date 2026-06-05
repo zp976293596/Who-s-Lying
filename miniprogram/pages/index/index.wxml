@@ -1,18 +1,35 @@
 <view class="container index-page">
+  <!-- 用户状态栏 -->
+  <view class="user-bar" wx:if="{{!isLoading}}">
+    <block wx:if="{{hasUserInfo}}">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="onLogout"></image>
+      <text class="username">{{userInfo.nickName}}</text>
+    </block>
+    <button wx:else class="btn-login" bindtap="onGetUserProfile">
+      <text class="login-icon">⬡</text>
+      <text>连接矩阵</text>
+    </button>
+  </view>
+
   <!-- 标题区 -->
   <view class="title-area">
     <text class="title">谁是人类</text>
     <text class="subtitle">WHO IS HUMAN</text>
+    <view class="matrix-line"></view>
   </view>
 
   <!-- 主按钮区 -->
   <view class="action-area">
-    <button class="btn-primary" bindtap="onStartGame">开始审查</button>
+    <button class="btn-primary" bindtap="onStartGame">
+      <text class="btn-icon">▶</text>
+      <text>开始审查</text>
+    </button>
     <button class="btn-secondary" bindtap="onGoProfile">个人档案</button>
   </view>
 
   <!-- 底部装饰 -->
   <view class="footer">
     <text class="footer-text">MATRIX PROTOCOL v1.0</text>
+    <text class="footer-ping">连接状态: {{hasUserInfo ? '已认证' : '未认证'}}</text>
   </view>
 </view>

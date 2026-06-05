@@ -1,3 +1,5 @@
+@import '../../styles/theme.wxss';
+
 .index-page {
   display: flex;
   flex-direction: column;
@@ -6,8 +8,58 @@
   min-height: 100vh;
   padding: 32rpx;
   box-sizing: border-box;
+  position: relative;
 }
 
+/* 用户状态栏 */
+.user-bar {
+  position: absolute;
+  top: 40rpx;
+  right: 32rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  border: 2rpx solid var(--accent-green);
+  box-shadow: 0 0 12rpx rgba(0, 255, 136, 0.3);
+}
+
+.username {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  max-width: 160rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-login {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: transparent;
+  border: 1rpx solid var(--accent-green);
+  color: var(--accent-green);
+  font-size: 24rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 8rpx;
+  line-height: 1;
+}
+
+.btn-login::after {
+  border: none;
+}
+
+.login-icon {
+  font-size: 28rpx;
+}
+
+/* 标题区 */
 .title-area {
   text-align: center;
   margin-bottom: 120rpx;
@@ -31,6 +83,14 @@
   font-family: monospace;
 }
 
+.matrix-line {
+  width: 200rpx;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+  margin: 24rpx auto 0;
+}
+
+/* 按钮区 */
 .action-area {
   width: 100%;
   max-width: 560rpx;
@@ -40,14 +100,26 @@
 .action-area button {
   margin-bottom: 32rpx;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
 }
 
+.btn-icon {
+  font-size: 28rpx;
+}
+
+/* 底部 */
 .footer {
   position: fixed;
   bottom: 64rpx;
   left: 0;
   width: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
 }
 
 .footer-text {
@@ -55,4 +127,10 @@
   color: var(--border-color);
   font-family: monospace;
   letter-spacing: 4rpx;
+}
+
+.footer-ping {
+  font-size: 20rpx;
+  color: var(--text-secondary);
+  font-family: monospace;
 }

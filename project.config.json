@@ -45,9 +45,9 @@
     "swc": false,
     "disableSWC": true
   },
-  "appid": "wxcdc7c583a281f8e5",
+  "appid": "wx15051889c28a6a75",
   "projectname": "who-is-human",
-  "libVersion": "3.3.4",
+  "libVersion": "3.16.1",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {},
   "srcMiniprogramRoot": "miniprogram/",

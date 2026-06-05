@@ -1,1 +1,207 @@
-/* 赛博暗黑主题变量 - 仅作为参考，实际变量定义在 app.wxss */
+/* 赛博暗黑主题 - Matrix Protocol */
+
+/* 霓虹文字效果 */
+.neon-text {
+  color: var(--accent-green);
+  text-shadow:
+    0 0 10rpx rgba(0, 255, 136, 0.5),
+    0 0 20rpx rgba(0, 255, 136, 0.3),
+    0 0 40rpx rgba(0, 255, 136, 0.1);
+}
+
+.neon-text-blue {
+  color: var(--accent-blue);
+  text-shadow:
+    0 0 10rpx rgba(0, 180, 216, 0.5),
+    0 0 20rpx rgba(0, 180, 216, 0.3);
+}
+
+.neon-text-red {
+  color: var(--accent-red);
+  text-shadow:
+    0 0 10rpx rgba(255, 51, 102, 0.5),
+    0 0 20rpx rgba(255, 51, 102, 0.3);
+}
+
+/* 扫描线效果 */
+.scanlines {
+  position: relative;
+}
+
+.scanlines::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2rpx,
+    rgba(0, 0, 0, 0.1) 2rpx,
+    rgba(0, 0, 0, 0.1) 4rpx
+  );
+  pointer-events: none;
+}
+
+/* 矩阵背景 */
+.matrix-bg {
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(0, 180, 216, 0.03) 0%, transparent 50%);
+}
+
+/* 边框发光 */
+.border-glow {
+  border: 1rpx solid var(--accent-green);
+  box-shadow: 0 0 15rpx rgba(0, 255, 136, 0.2);
+}
+
+.border-glow-blue {
+  border: 1rpx solid var(--accent-blue);
+  box-shadow: 0 0 15rpx rgba(0, 180, 216, 0.2);
+}
+
+.border-glow-red {
+  border: 1rpx solid var(--accent-red);
+  box-shadow: 0 0 15rpx rgba(255, 51, 102, 0.2);
+}
+
+/* 警告/危险状态 */
+.status-danger {
+  background: rgba(255, 51, 102, 0.1);
+  border-left: 4rpx solid var(--accent-red);
+}
+
+.status-warning {
+  background: rgba(255, 215, 0, 0.1);
+  border-left: 4rpx solid var(--accent-yellow);
+}
+
+.status-safe {
+  background: rgba(0, 255, 136, 0.1);
+  border-left: 4rpx solid var(--accent-green);
+}
+
+/* 倒计时样式 */
+.countdown {
+  font-family: 'Courier New', monospace;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: var(--accent-green);
+  letter-spacing: 4rpx;
+}
+
+.countdown-warning {
+  color: var(--accent-yellow);
+}
+
+.countdown-danger {
+  color: var(--accent-red);
+  animation: pulse 1s infinite;
+}
+
+/* 头像框 */
+.avatar-frame {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-frame::before {
+  content: '';
+  position: absolute;
+  top: -4rpx;
+  left: -4rpx;
+  right: -4rpx;
+  bottom: -4rpx;
+  border: 2rpx solid var(--accent-green);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+/* 数据表格 */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table .row {
+  display: flex;
+  border-bottom: 1rpx solid var(--border-color);
+  padding: 16rpx 0;
+}
+
+.data-table .cell {
+  flex: 1;
+  font-size: 24rpx;
+}
+
+.data-table .cell-header {
+  color: var(--text-secondary);
+  font-size: 22rpx;
+}
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  font-size: 20rpx;
+  border-radius: 20rpx;
+  background: rgba(0, 255, 136, 0.1);
+  color: var(--accent-green);
+  border: 1rpx solid rgba(0, 255, 136, 0.2);
+}
+
+/* 输入框 */
+.input-cyber {
+  background: var(--bg-secondary);
+  border: 1rpx solid var(--border-color);
+  border-radius: 8rpx;
+  padding: 20rpx 24rpx;
+  color: var(--text-primary);
+  font-size: 28rpx;
+}
+
+.input-cyber:focus {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 10rpx rgba(0, 255, 136, 0.1);
+}
+
+/* 卡片悬停效果 */
+.card-interactive {
+  transition: all 0.2s ease;
+}
+
+.card-interactive:active {
+  transform: scale(0.98);
+  box-shadow: 0 0 20rpx rgba(0, 255, 136, 0.2);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8rpx;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4rpx;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* 隐藏滚动条 */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

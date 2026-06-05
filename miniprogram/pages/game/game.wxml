@@ -1,9 +1,99 @@
 <view class="container game-page">
-  <text class="page-title">第 {{round}} 轮审查</text>
-  <text class="phase-label">当前阶段：{{phase}}</text>
+  <!-- 顶部信息栏 -->
+  <view class="game-header">
+    <view class="round-info">
+      <text class="round-label">第 {{round}}/{{maxRounds}} 轮</text>
+      <text class="phase-badge badge badge-green">{{phase === 'answering' ? '答题中' : phase === 'revealing' ? '揭示中' : phase}}</text>
+    </view>
+    <view class="timer {{timeLeft <= 10 ? 'timer-warning' : ''}}" wx:if="{{phase === 'answering'}}">
+      <text class="timer-value">{{timeLeft}}</text>
+      <text class="timer-unit">秒</text>
+    </view>
+  </view>
 
-  <!-- 游戏内容区域（后续Phase填充） -->
-  <view class="placeholder card">
-    <text class="text-secondary">等待实现...</text>
+  <!-- 嫌疑公示栏 -->
+  <view class="suspect-board card">
+    <text class="board-title">嫌疑指数</text>
+    <view class="player-list">
+      <view class="player-item" wx:for="{{players}}" wx:key="id" wx:if="{{item.alive}}">
+        <text class="player-name">{{item.isHuman ? '你' : 'AI-' + item.personality}}</text>
+        <view class="possibility-bar">
+          <view class="possibility-fill" style="width: {{item.humanPossibility}}%"></view>
+        </view>
+        <text class="possibility-value {{item.humanPossibility >= 60 ? 'text-red' : ''}}">{{item.humanPossibility}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 答题阶段 -->
+  <view class="question-area" wx:if="{{phase === 'answering' && question}}">
+    <view class="question-type badge badge-blue">{{question.type}}</view>
+    <text class="question-content">{{question.content}}</text>
+
+    <view class="options-list">
+      <view
+        class="option-item {{selectedAnswer === item.label ? 'option-selected' : ''}}"
+        wx:for="{{question.options}}"
+        wx:key="label"
+        bindtap="onSelectOption"
+        data-answer="{{item.label}}"
+      >
+        <text class="option-label">{{item.label}}</text>
+        <text class="option-text">{{item.text}}</text>
+      </view>
+    </view>
+
+    <button class="btn-primary submit-btn" bindtap="onSubmitAnswer">
+      {{selectedAnswer ? '提交答案 (' + selectedAnswer + ')' : '请先选择答案'}}
+    </button>
+  </view>
+
+  <!-- 揭示阶段 -->
+  <view class="reveal-area" wx:if="{{phase === 'revealing'}}">
+    <!-- 正确答案 -->
+    <view class="correct-answer card-glow">
+      <text class="reveal-label">正确答案</text>
+      <text class="answer-value text-green">{{correctAnswer}}</text>
+      <view class="my-answer {{myResult.isCorrect ? 'answer-correct' : 'answer-wrong'}}" wx:if="{{myResult}}">
+        <text>你的答案：{{myResult.answer || '未作答'}}</text>
+        <text class="result-icon">{{myResult.isCorrect ? '✓' : '✗'}}</text>
+      </view>
+    </view>
+
+    <!-- 所有玩家作答情况 -->
+    <view class="answers-list">
+      <text class="list-title">作答分析</text>
+      <view class="answer-item" wx:for="{{answerResults}}" wx:key="playerId">
+        <view class="answer-header">
+          <text class="player-name {{item.isHuman ? 'text-green' : ''}}">{{item.playerName}}</text>
+          <text class="response-time">{{item.responseTimeStr}}</text>
+        </view>
+        <view class="answer-body">
+          <text class="answer-choice">选择：{{item.answer || '未作答'}}</text>
+          <text class="answer-result {{item.isCorrect ? 'text-green' : 'text-red'}}">
+            {{item.isCorrect ? '✓ 正确' : '✗ 错误'}}
+          </text>
+        </view>
+        <!-- 异常标记 -->
+        <view class="anomaly-tags" wx:if="{{item.anomalies.length > 0}}">
+          <text class="anomaly-tag" wx:for="{{item.anomalies}}" wx:for-item="anomaly" wx:key="*this">
+            {{anomaly}}
+          </text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 下一轮按钮 -->
+    <button class="btn-primary next-btn" bindtap="onNextRound">
+      {{round < maxRounds ? '进入第 ' + (round + 1) + ' 轮' : '查看结算'}}
+    </button>
+  </view>
+
+  <!-- 结束 -->
+  <view class="finish-area" wx:if="{{phase === 'finished'}}">
+    <view class="card">
+      <text class="text-green" style="font-size: 36rpx; font-weight: bold;">游戏结束</text>
+    </view>
+    <button class="btn-secondary" bindtap="onFinishGame" style="margin-top: 40rpx;">返回首页</button>
   </view>
 </view>

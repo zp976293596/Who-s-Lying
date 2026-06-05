@@ -10,14 +10,32 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
 
+  // 处理更新用户资料的请求
+  if (event.action === 'updateProfile') {
+    try {
+      await db.collection('users').where({
+        openid: openid
+      }).update({
+        data: {
+          nickName: event.nickName || '',
+          avatarUrl: event.avatarUrl || '',
+          lastLoginAt: db.serverDate()
+        }
+      })
+      return { code: 0, message: '更新成功' }
+    } catch (err) {
+      console.error('更新失败', err)
+      return { code: -1, message: '更新失败', error: err }
+    }
+  }
+
+  // 登录流程
   try {
-    // 查询用户是否已存在
     const userRes = await db.collection('users').where({
       openid: openid
     }).get()
 
     if (userRes.data.length === 0) {
-      // 首次登录，创建用户记录
       await db.collection('users').add({
         data: {
           openid: openid,
@@ -30,7 +48,6 @@ exports.main = async (event, context) => {
         }
       })
     } else {
-      // 更新最后登录时间
       await db.collection('users').where({
         openid: openid
       }).update({
