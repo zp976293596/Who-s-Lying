@@ -8,26 +8,23 @@
 
   <!-- 故事内容 -->
   <view class="story-container">
-    <scroll-view scroll-y class="story-scroll" scroll-into-view="{{scrollToView}}">
-      <view class="story-content">
+    <view class="story-content">
+      <view
+        class="story-group group-{{item.type}}"
+        wx:for="{{displayedGroups}}"
+        wx:key="index"
+      >
         <view
-          class="story-group group-{{item.type}}"
-          wx:for="{{displayedGroups}}"
-          wx:key="index"
-          id="group-{{item.index}}"
+          class="story-line"
+          wx:for="{{item.lines}}"
+          wx:for-item="line"
+          wx:key="text"
         >
-          <view
-            class="story-line"
-            wx:for="{{item.visibleLines}}"
-            wx:for-item="line"
-            wx:key="fullText"
-          >
-            <text class="line-text">{{line.fullText.substring(0, line.charIndex)}}</text>
-            <text class="cursor" wx:if="{{!line.typingComplete}}">▊</text>
-          </view>
+          <text class="line-text">{{line.displayText}}</text>
+          <text class="cursor" wx:if="{{line.showCursor}}">▊</text>
         </view>
       </view>
-    </scroll-view>
+    </view>
   </view>
 
   <!-- 进度条 -->
@@ -39,7 +36,7 @@
       </view>
       <view class="progress-info">
         <text class="progress-label">{{isPlaying ? '数据传输' : isFinished ? '传输完成' : '初始化'}}</text>
-        <text class="progress-percent">{{progress | floor}}%</text>
+        <text class="progress-percent">{{progressText}}%</text>
       </view>
     </view>
   </view>

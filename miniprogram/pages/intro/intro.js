@@ -61,6 +61,7 @@ Page({
     currentCharIndex: 0,
     currentText: '',
     progress: 0,
+    progressText: '0',
     isPlaying: false,
     isFinished: false,
     // 动画相关
@@ -121,7 +122,10 @@ Page({
         clearInterval(progressTimer)
       }
 
-      this.setData({ progress: currentProgress })
+      this.setData({
+        progress: currentProgress,
+        progressText: Math.floor(currentProgress).toString()
+      })
     }, 50)
 
     this.setData({ progressTimer })
@@ -138,80 +142,64 @@ Page({
 
     const group = storyGroups[nextIndex]
 
-    // 添加新组（初始不可见）
-    displayedGroups.push({
-      ...group,
+    // 添加新组
+    const newGroup = {
+      type: group.type,
       index: nextIndex,
-      visibleLines: [],
-      allLinesShown: false
-    })
+      lines: group.lines.map(text => ({
+        text: text,
+        displayText: '',
+        showCursor: true,
+        charIndex: 0
+      }))
+    }
+
+    displayedGroups.push(newGroup)
 
     this.setData({
       currentGroupIndex: nextIndex,
       displayedGroups
     })
 
-    // 逐行显示组内文本
-    this.showLinesInGroup(nextIndex, 0)
+    // 开始打字机效果
+    this.typeGroupLine(nextIndex, 0)
   },
 
-  showLinesInGroup(groupIndex, lineIndex) {
+  typeGroupLine(groupIndex, lineIndex) {
     const { displayedGroups, storyGroups } = this.data
     const group = storyGroups[groupIndex]
+    const line = displayedGroups[groupIndex].lines[lineIndex]
 
-    if (lineIndex >= group.lines.length) {
-      // 组内所有行显示完毕
-      displayedGroups[groupIndex].allLinesShown = true
-      this.setData({ displayedGroups })
-
-      // 等待后显示下一组
-      const timer = setTimeout(() => {
-        this.showNextGroup()
-      }, group.pause)
-      this.setData({ groupTimer: timer })
-      return
-    }
-
-    const text = group.lines[lineIndex]
-
-    // 添加新行
-    displayedGroups[groupIndex].visibleLines.push({
-      text: text,
-      charIndex: 0,
-      fullText: text,
-      typingComplete: false
-    })
-
-    this.setData({ displayedGroups })
-
-    // 打字机效果
-    this.typeText(groupIndex, lineIndex, 0)
-  },
-
-  typeText(groupIndex, lineIndex, charIndex) {
-    const { displayedGroups } = this.data
-    const line = displayedGroups[groupIndex].visibleLines[lineIndex]
-
-    if (charIndex > line.fullText.length) {
+    if (line.charIndex >= line.text.length) {
       // 当前行打字完成
-      displayedGroups[groupIndex].visibleLines[lineIndex].typingComplete = true
+      displayedGroups[groupIndex].lines[lineIndex].showCursor = false
       this.setData({ displayedGroups })
 
-      // 显示下一行
-      setTimeout(() => {
-        this.showLinesInGroup(groupIndex, lineIndex + 1)
-      }, 300)
+      // 检查是否还有下一行
+      if (lineIndex + 1 < group.lines.length) {
+        // 显示下一行
+        setTimeout(() => {
+          this.typeGroupLine(groupIndex, lineIndex + 1)
+        }, 300)
+      } else {
+        // 组内所有行显示完毕，等待后显示下一组
+        const timer = setTimeout(() => {
+          this.showNextGroup()
+        }, group.pause)
+        this.setData({ groupTimer: timer })
+      }
       return
     }
 
-    // 更新当前显示的文字
-    displayedGroups[groupIndex].visibleLines[lineIndex].charIndex = charIndex
+    // 打下一个字
+    line.charIndex++
+    line.displayText = line.text.substring(0, line.charIndex)
     this.setData({ displayedGroups })
 
-    // 继续打下一个字
+    // 继续打字
     const timer = setTimeout(() => {
-      this.typeText(groupIndex, lineIndex, charIndex + 1)
-    }, 80) // 打字速度
+      this.typeGroupLine(groupIndex, lineIndex)
+    }, 80)
 
     this.setData({ charTimer: timer })
   },
