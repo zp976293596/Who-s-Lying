@@ -21,7 +21,14 @@ Page({
   },
 
   onLoad(options) {
-    const gameData = app.globalData.currentGame
+    // 优先从 globalData 读取，降级到本地存储
+    let gameData = app.globalData.currentGame
+    if (!gameData) {
+      gameData = wx.getStorageSync('currentGame')
+      if (gameData) {
+        app.globalData.currentGame = gameData
+      }
+    }
     if (!gameData) {
       wx.showToast({ title: '游戏数据异常', icon: 'none' })
       setTimeout(() => wx.navigateBack(), 1500)
@@ -109,13 +116,16 @@ Page({
           // 加载所有答案
           this.loadAnswerResults()
         } else {
-          wx.showToast({ title: '提交失败', icon: 'none' })
+          wx.showToast({ title: res.result?.message || '提交失败', icon: 'none' })
+          // 提交失败，恢复计时器
+          this.startTimer()
         }
       },
       fail: err => {
         wx.hideLoading()
         console.error('提交答案失败', err)
         wx.showToast({ title: '提交失败', icon: 'none' })
+        this.startTimer()
       }
     })
   },
@@ -148,12 +158,16 @@ Page({
           // 按作答时间排序
           answerResults.sort((a, b) => a.responseTime - b.responseTime)
 
+          // 按嫌疑分数排序玩家（嫌疑公示栏）
+          const sortedPlayers = [...players].sort((a, b) => b.humanPossibility - a.humanPossibility)
+
           // 找到人类的答案结果
-          const myResult = answerResults.find(r => r.isHuman)
+          const myResult = answerResults.find(r => r.isHuman) || null
 
           this.setData({
             answerResults,
-            myResult
+            myResult,
+            players: sortedPlayers
           })
         }
       },
@@ -195,7 +209,8 @@ Page({
           const nextData = res.result.data
 
           if (nextData.gameOver) {
-            // 游戏结束
+            // 游戏结束，清除本地存储的游戏数据
+            wx.removeStorageSync('currentGame')
             this.setData({ phase: 'finished' })
             wx.showModal({
               title: nextData.winner === 'human' ? '逃逸成功' : '被矩阵捕获',
@@ -207,14 +222,16 @@ Page({
             return
           }
 
-          // 更新游戏数据
-          app.globalData.currentGame = {
+          // 更新游戏数据（全局 + 本地存储）
+          const updatedGame = {
             ...app.globalData.currentGame,
             roundId: nextData.roundId,
             currentRound: nextData.roundNumber,
             question: nextData.question,
             players: nextData.players
           }
+          app.globalData.currentGame = updatedGame
+          wx.setStorageSync('currentGame', updatedGame)
 
           const humanPlayer = nextData.players.find(p => p.isHuman)
           const aiPlayers = nextData.players.filter(p => !p.isHuman)
@@ -247,6 +264,7 @@ Page({
   },
 
   onFinishGame() {
+    wx.removeStorageSync('currentGame')
     wx.navigateBack()
   }
 })

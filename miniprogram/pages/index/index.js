@@ -119,8 +119,9 @@ Page({
         wx.hideLoading()
         if (res.result && res.result.code === 0) {
           const gameData = res.result.data
-          // 将游戏数据存储到全局
+          // 将游戏数据存储到全局和本地
           app.globalData.currentGame = gameData
+          wx.setStorageSync('currentGame', gameData)
           wx.navigateTo({
             url: `/pages/game/game?gameId=${gameData.gameId}`
           })

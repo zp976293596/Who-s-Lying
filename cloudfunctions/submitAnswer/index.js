@@ -5,6 +5,7 @@ cloud.init({
 })
 
 const db = cloud.database()
+const _ = db.command
 
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
@@ -33,8 +34,24 @@ exports.main = async (event, context) => {
     const roundRes = await db.collection('rounds').doc(roundId).get()
     const round = roundRes.data
 
+    // 校验重复提交
+    const existingAnswer = await db.collection('answers')
+      .where({ gameId, roundId, playerId: humanPlayer.id })
+      .get()
+    if (existingAnswer.data.length > 0) {
+      return { code: -1, message: '已提交过答案，不可重复提交' }
+    }
+
+    // 弃权次数校验
+    if (answer === '') {
+      const skipAbility = humanPlayer.abilities?.skip
+      if (!skipAbility || skipAbility.used >= skipAbility.total) {
+        return { code: -1, message: '弃权次数已用完' }
+      }
+    }
+
     // 判断答案是否正确
-    const isCorrect = answer === round.correctAnswer
+    const isCorrect = answer === '' ? false : answer === round.correctAnswer
 
     // 计算作答异常度
     let anomaly = 0
@@ -61,6 +78,15 @@ exports.main = async (event, context) => {
         timestamp: db.serverDate()
       }
     })
+
+    // 弃权时扣减次数
+    if (answer === '' && humanPlayer.abilities?.skip) {
+      const playerIndex = game.players.findIndex(p => p.id === humanPlayer.id)
+      const skipUsed = `players.${playerIndex}.abilities.skip.used`
+      await db.collection('games').doc(gameId).update({
+        data: { [skipUsed]: _.inc(1) }
+      })
+    }
 
     // 生成AI答案
     await generateAIAnswers(game, round, gameId, roundId)

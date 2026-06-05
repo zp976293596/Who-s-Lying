@@ -54,7 +54,11 @@
     <view class="correct-answer card-glow">
       <text class="reveal-label">正确答案</text>
       <text class="answer-value text-green">{{correctAnswer}}</text>
-      <view class="my-answer {{myResult.isCorrect ? 'answer-correct' : 'answer-wrong'}}" wx:if="{{myResult}}">
+      <view class="my-answer answer-wrong" wx:if="{{!myResult}}">
+        <text>你的答案：未作答</text>
+        <text class="result-icon">✗</text>
+      </view>
+      <view class="my-answer {{myResult.isCorrect ? 'answer-correct' : 'answer-wrong'}}" wx:elif="{{myResult}}">
         <text>你的答案：{{myResult.answer || '未作答'}}</text>
         <text class="result-icon">{{myResult.isCorrect ? '✓' : '✗'}}</text>
       </view>

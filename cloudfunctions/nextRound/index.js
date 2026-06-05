@@ -32,6 +32,12 @@ exports.main = async (event, context) => {
 
     const answers = answersRes.data
 
+    // 校验所有存活玩家是否已作答
+    const alivePlayersList = game.players.filter(p => p.alive)
+    if (answers.length < alivePlayersList.length) {
+      return { code: -1, message: '还有玩家未作答，无法进入下一轮' }
+    }
+
     // 计算每个玩家的人类可能性变化
     let players = [...game.players]
 
@@ -71,7 +77,6 @@ exports.main = async (event, context) => {
     // 检查游戏是否结束
     const alivePlayers = players.filter(p => p.alive)
     const humanPlayer = players.find(p => p.isHuman)
-    const aliveAIs = players.filter(p => !p.isHuman && p.alive)
 
     // 人类被淘汰
     if (!humanPlayer.alive) {
@@ -93,8 +98,8 @@ exports.main = async (event, context) => {
       }
     }
 
-    // 存活人数 <= 2，人类胜利
-    if (alivePlayers.length <= 2) {
+    // 仅剩人类1人（所有AI被淘汰），人类胜利
+    if (alivePlayers.length === 1) {
       await db.collection('games').doc(gameId).update({
         data: {
           status: 'finished',
@@ -109,6 +114,29 @@ exports.main = async (event, context) => {
           gameOver: true,
           winner: 'human',
           players
+        }
+      }
+    }
+
+    // 存活2人（人类+1AI），进入最终审判
+    if (alivePlayers.length === 2) {
+      await db.collection('games').doc(gameId).update({
+        data: {
+          finalTrial: { started: true, roundId: currentRound._id, result: null }
+        }
+      })
+
+      return {
+        code: 0,
+        data: {
+          gameOver: false,
+          finalTrial: true,
+          players,
+          eliminatedPlayers: eliminatedPlayers.map(p => ({
+            id: p.id,
+            personality: p.personality,
+            isHuman: p.isHuman
+          }))
         }
       }
     }

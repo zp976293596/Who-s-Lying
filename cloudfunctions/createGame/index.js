@@ -67,7 +67,8 @@ exports.main = async (event, context) => {
           signalShield: { total: difficulty === 'easy' ? 3 : 2, used: 0 },
           consciousnessDisruption: { total: difficulty === 'easy' ? 2 : 1, used: 0 },
           memoryOverride: { total: 1, used: 0 },
-          silentMode: { total: 1, used: 0 }
+          silentMode: { total: 1, used: 0 },
+          skip: { total: 1, used: 0 }
         }
       }
     ]
