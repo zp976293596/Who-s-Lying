@@ -13,8 +13,8 @@
 
   <!-- 标题区 -->
   <view class="title-area">
-    <text class="title">谁是人类</text>
-    <text class="subtitle">WHO IS HUMAN</text>
+    <text class="title">谁在撒谎</text>
+    <text class="subtitle">WHO'S LYING</text>
     <view class="matrix-line"></view>
   </view>
 

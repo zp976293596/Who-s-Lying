@@ -46,13 +46,13 @@
     "disableSWC": true
   },
   "appid": "wx15051889c28a6a75",
-  "projectname": "who-is-human",
+  "projectname": "whos-lying",
   "libVersion": "3.16.1",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {},
   "srcMiniprogramRoot": "miniprogram/",
   "compileType": "miniprogram",
-  "description": "谁是人类 - 赛博暗黑风格推理对战小游戏",
+  "description": "谁在撒谎 - 赛博暗黑风格推理对战小游戏",
   "simulatorPluginLibVersion": {},
   "packOptions": {
     "ignore": [],
