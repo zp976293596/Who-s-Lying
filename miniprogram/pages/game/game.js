@@ -294,6 +294,7 @@ Page({
       correctCount,
       wrongCount
     })
+
     this.startDiscussionTimer()
     this.loadDiscussions()
   },

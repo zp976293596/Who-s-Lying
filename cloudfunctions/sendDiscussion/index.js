@@ -76,13 +76,9 @@ exports.main = async (event, context) => {
       return { code: -1, message: '游戏不存在' }
     }
 
+    // 获取round信息（用于AI发言）
     const roundRes = await db.collection('rounds').doc(roundId).get()
     const round = roundRes.data
-
-    // 系统生成的消息跳过状态验证
-    if (!isSystem && (!round || round.status !== 'discussing')) {
-      return { code: -1, message: '当前不是讨论阶段' }
-    }
 
     // 保存玩家消息
     await db.collection('discussions').add({
