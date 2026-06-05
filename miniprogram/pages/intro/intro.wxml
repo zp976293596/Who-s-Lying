@@ -10,19 +10,12 @@
   <view class="story-container">
     <view class="story-content">
       <view
-        class="story-group group-{{item.type}}"
-        wx:for="{{displayedGroups}}"
+        class="story-line {{item.done ? 'line-done' : ''}} {{currentLine === index ? 'line-active' : ''}}"
+        wx:for="{{lines}}"
         wx:key="index"
       >
-        <view
-          class="story-line"
-          wx:for="{{item.lines}}"
-          wx:for-item="line"
-          wx:key="text"
-        >
-          <text class="line-text">{{line.displayText}}</text>
-          <text class="cursor" wx:if="{{line.showCursor}}">▊</text>
-        </view>
+        <text class="line-text">{{item.display}}</text>
+        <text class="cursor" wx:if="{{currentLine === index && !item.done}}">▊</text>
       </view>
     </view>
   </view>
@@ -35,19 +28,19 @@
         <view class="progress-glow" style="left: {{progress}}%"></view>
       </view>
       <view class="progress-info">
-        <text class="progress-label">{{isPlaying ? '数据传输' : isFinished ? '传输完成' : '初始化'}}</text>
-        <text class="progress-percent">{{progressText}}%</text>
+        <text class="progress-label">{{showStart ? '传输完成' : '数据传输'}}</text>
+        <text class="progress-percent">{{progress}}%</text>
       </view>
     </view>
   </view>
 
   <!-- 按钮区域 -->
   <view class="button-area">
-    <button class="btn-skip" bindtap="onSkip" wx:if="{{isPlaying}}">
+    <button class="btn-skip" bindtap="onSkip" wx:if="{{!showStart}}">
       <text>跳过 ▶▶</text>
     </button>
 
-    <button class="btn-start" bindtap="onStartGame" wx:if="{{isFinished}}">
+    <button class="btn-start" bindtap="onStart" wx:if="{{showStart}}">
       <text class="start-text">进入矩阵</text>
       <view class="start-arrow">→</view>
     </button>
