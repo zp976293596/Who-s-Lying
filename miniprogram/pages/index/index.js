@@ -122,8 +122,9 @@ Page({
           // 将游戏数据存储到全局和本地
           app.globalData.currentGame = gameData
           wx.setStorageSync('currentGame', gameData)
+          // 跳转到过场动画页面
           wx.navigateTo({
-            url: `/pages/game/game?gameId=${gameData.gameId}`
+            url: '/pages/intro/intro'
           })
         } else {
           wx.showToast({ title: res.result?.message || '创建失败', icon: 'none' })

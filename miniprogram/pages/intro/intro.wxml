@@ -1,0 +1,49 @@
+<view class="intro-page">
+  <!-- 背景效果 -->
+  <view class="bg-effects">
+    <view class="scanline"></view>
+    <view class="matrix-rain"></view>
+  </view>
+
+  <!-- 故事内容 -->
+  <view class="story-container">
+    <view class="story-content">
+      <view
+        class="story-line {{item.visible ? 'line-visible' : ''}}"
+        wx:for="{{visibleLines}}"
+        wx:key="index"
+        style="animation-duration: {{item.duration}}ms"
+      >
+        <text class="line-text {{item.index >= 12 ? 'text-highlight' : ''}}">{{item.text}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 进度条 -->
+  <view class="progress-container">
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progress}}%"></view>
+    </view>
+    <text class="progress-text">{{isPlaying ? '传输中...' : isFinished ? '传输完成' : '准备中'}}</text>
+  </view>
+
+  <!-- 按钮区域 -->
+  <view class="button-area">
+    <!-- 跳过按钮（播放中显示） -->
+    <button class="btn-skip" bindtap="onSkip" wx:if="{{isPlaying}}">
+      <text class="skip-icon">▶</text>
+      <text>跳过</text>
+    </button>
+
+    <!-- 开始按钮（播放完成后显示） -->
+    <button class="btn-start" bindtap="onStartGame" wx:if="{{isFinished}}">
+      <text class="start-icon">⬡</text>
+      <text>进入矩阵</text>
+    </button>
+  </view>
+
+  <!-- 底部装饰 -->
+  <view class="footer-decoration">
+    <text class="footer-text">MATRIX PROTOCOL v1.0</text>
+  </view>
+</view>
