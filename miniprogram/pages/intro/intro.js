@@ -196,10 +196,14 @@ Page({
     line.displayText = line.text.substring(0, line.charIndex)
     this.setData({ displayedGroups })
 
-    // 继续打字
+    // 继续打字 - 使用随机延迟增加呼吸感
+    const baseDelay = 60
+    const randomDelay = Math.random() * 40
+    const delay = baseDelay + randomDelay
+
     const timer = setTimeout(() => {
       this.typeGroupLine(groupIndex, lineIndex)
-    }, 80)
+    }, delay)
 
     this.setData({ charTimer: timer })
   },
